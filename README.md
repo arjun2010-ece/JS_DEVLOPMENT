@@ -8,3 +8,43 @@ You can use .editorconfig or prettier or both to maintain consistency across the
   Since anyone can publish packages on npm and can contain some vulnerabilities in this too. ALthough npm has "audit" feature to check for vulnerabilities but we can provide a additional security check by a 3rd party package "snyk" that scan/checks for vulnerabilities.
 
   npm audit ===> provide reports for vulnerabilities in our npm packages installed.
+
+3. Choose Development web servers:
+    choices are: 
+    http-server, very light weight for normal purposes.
+    Express for development of nodejs
+    Browsersync - most interesting one--just need to share the URL and Anyone will see the live changes on any device , be it mobile, laptop, desktop on same LAN connections, integrates well wit webpack and express too.
+    webpack-dev-server - Its built into webpack, serves from memory, includes hot reloading.
+
+    These cannot be used for production hosting.
+
+    We will use express server for this project purposes.
+    Create a buildScripts folder and srcServer.js file inside.
+    Also create sec/index.html too.
+
+    Sharing work in progress:: all punches a hole in firewall and share on a URL.
+    a. localtunnel, most easiest to work on.
+        steps::
+            1. npm i localtunnel -g
+            2. start your app, e.g npm start
+            3. in the terminal:: lt --port 3000
+  
+    b. ngrok, little bit extra step.
+        steps::
+            1. Sign up
+            2. Install ngrok
+            3. Install authtoken
+            4. start your app
+            5. ./ngrok http 80
+    c. Vercel: Quickly deploys NodeJs to the cloud
+        steps::
+            1. npm i -g vercel
+            2. Create start script
+            3. Vercel
+    d. Surge
+        steps::
+            1. npm i -g surge
+            2. surge
+
+At this stage we tried localtunnel for demo purposes.
+
