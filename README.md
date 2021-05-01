@@ -48,3 +48,20 @@ You can use .editorconfig or prettier or both to maintain consistency across the
 
 At this stage we tried localtunnel for demo purposes.
 
+
+4. Automation : Automating the dev environment build process today.
+
+    3 popular choices are::
+      Grunt, Gulp, npm scripts
+
+    we use npm scripts. Inside scripts in package json file for running one service is okay. 
+    But if we want to run more than one script then we need a package "npm-run-all" from npm.
+
+  "scripts": {
+    "start": "node buildScripts/srcServer.js",
+    "localtunnel": "lt --port 3000",
+    "share": "npm-run-all --parallel start localtunnel"
+    "share1": "npm-run-all --parallel "name of script 1" "name of script 2"
+    },
+
+  The script cmd "share" is running both "start" script and "localtunnel" script too 
