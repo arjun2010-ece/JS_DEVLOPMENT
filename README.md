@@ -147,3 +147,112 @@ app.use(require("webpack-dev-middleware")(compiler, {
   publicPath: config.output.publicPath
 }))
 ==============
+
+7. Linters : Avoid mistakes and enforce consistency.
+  
+  ex: ESLint
+
+decisions to make for eslint:
+1. which config files to use. currently use 5 formats:
+https://eslint.org/docs/user-guide/configuring/configuration-files#configuration-file-formats
+
+2. Which rules to enable ?
+ Setup a team meeting to decide which rules to enable since there are dozens of rules we can configure.
+
+3. Which rules justify warnings and which rules justify errors ?
+  with warning, can continue development but errors breaks the builds.
+
+4. Eslint for a Framework ?
+We can configure eslint for react with eslint-plugin-react packages.
+We can do similar things in nodejs or any framework of out choice, not only react.
+
+5. Use a presets ?
+We can configure eslint either from scratch or we can use recommended rules and tweak as when we want something.
+
+
+Since Eslint does not automatically watch files for errors, so there are 2 solutions/plugins to enable that.
+eslint-loader or eslint-watch
+
+eslint-loader : tied to webpack, and re-lints all the files upon save.
+eslint-watch: not tied to webpack and do file watch too. Better to use this, separate npm packages.
+
+Eslint does not lint experimental JS features, if we want that then we need babel-eslint. and we can see those features in below link::
+
+
+Why Lint via an AUtomated Build process when we can have linting in code editors ?
+Bcoz we want all our Linting decisions in one place for code quality.
+Universal config. Part of CI server.
+
+Lets create a .eslintrc.json file in the root, since extention is reqd nowadays as withoud extention its deprecated, so json there.
+ and paste the recommended settings from these links::
+ https://gist.github.com/coryhouse/61f866c7174220777899bcfff03dab7f
+
+"root": true, tells us that that its root eslint file.
+"extends": [
+    "eslint:recommended", // we using recommended rules here.
+    "plugin:import/errors",
+    "plugin:import/warnings"
+  ],
+
+"parserOptions": {
+    "ecmaVersion": 7, // it tells js version we are using.
+    "sourceType": "module"
+  },
+
+And rules section below for overriding.
+"rules": {}
+ e.g:
+ "rules": {
+   "no-console": 1
+ }
+
+ we are over-riding consoles, meaning, we do not want consoles and number values tells whether its warning(1) or errors(2) or disable completely(0).
+
+if consoles are there then show warnings(1).
+
+"type of rules": "show warning/error if present".
+
+COme to package.json and create a script for linting.
+
+esw is executable for eslint-watch in package.json files.
+
+"lint": "esw webpack.config.* src buildScripts"
+
+esw watches for linting rules in webpack config file, src folder and buildScripts folder.
+
+If some rules we cannot fix then go to the files and put this:
+
+for disabling the rule in entire file::
+/* eslint-disable no-console */   
+
+for disabling the rule in only one line::
+// eslint-disable-line no-console
+
+
+If no errors/warnings then it will come clean.
+
+For watching all the time::
+"lint:watch": "npm run lint -- --watch",  extra set of dash is reqd for args purposes.
+
+If we want linting to work when we start out app then use this commands:
+
+"start": "npm-run-all --parallel open:src lint:watch",
+
+with npm-run-all pckg we running 2 scripts here.
+
+
+7. Deployment:
+  Host the backend on AWS/Google cloud/Heroku.
+  Host frontend on Netlify/Github pages/ Surge
+
+Paths to production:
+npm start (development)
+npm run build (production build)
+npm run deploy (deploy production)
+
+WEBSITE TO FIND REACTJS/NEXTJS/GATSBY boilerplates::
+
+https://www.javascriptstuff.com/react-starter-projects/
+
+
+
