@@ -98,6 +98,52 @@ At this stage we tried localtunnel for demo purposes.
   same way we can do in other files also.
   
 
+6. Bundling : Module bundlers are tools frontend developers used to bundle JavaScript modules into a single JavaScript files that can be executed in the browser.
 
+Browser does not support module system.
 
+ex:
+ webpack, parcel, browserify, rollup, Snowpack.
 
+ Why Webpack:
+  1. Much more than just JS:
+    -  CSS
+    -  Images
+    -  Fonts
+    -  HTML
+  2. Bundle Splitting
+  3. Hot Module reloading
+
+We use webpack here.
+Create a file "webpack.config.dev.js" for bundling purposes.
+If you see the object there, then "devtool: eval-source-map", for debug or compile our code.
+"entry" -- webpack will need an entry point, which then recursively other js files inside that.
+"output" -- In development mode, no actual files are generated. Files are served from memory, but still need to write there.
+
+"plugins" -- It enhances the webpacks power.
+"module" -- Here, we tell webpack, how to handle diff file types.
+
+ module: {
+    rules: [
+      { test: /\.js$/, exclude: /node_modules/, use: ["babel-loader"] },
+      { test: /\.css$/, use: ["style-loader", "css-loader"] },
+    ],
+  }
+
+  why write more rules here than javascript ?
+  So that we can import them like we import in JS, here css files also.
+
+  get initial webpack dev file from this link:
+  https://gist.githubusercontent.com/coryhouse/47c7f268553b4a4ce84c861595d909eb/raw/e64a0742f82eb4ade2c4090600cfa1ccdb6e40a8/webpack.config.dev.js
+
+  After creating webpack.config.dev.js configs, then go to srcServer.js file and integrate these codes to make nodejs use webpack:::::
+
+import webpack from "webpack";
+import config from "../webpack.config.dev";
+
+const compiler = webpack(config);
+
+app.use(require("webpack-dev-middleware")(compiler, {
+  publicPath: config.output.publicPath
+}))
+==============
